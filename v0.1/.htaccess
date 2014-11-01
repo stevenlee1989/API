@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /api/v0.1/
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ([a-zA-Z])$ /api/v0.1/index.php?ctrl=$1 [QSA,L]
+RewriteRule (.*)/(.*)/?$ /api/v0.1/index.php?ctrl=$1&param=$2 [NC,QSA]
