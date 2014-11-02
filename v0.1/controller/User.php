@@ -9,9 +9,19 @@ class UserCtrl {
 	}
 
 	// TODO
-	public function GETUser() {
-		$data = new HelpModel();
-	    ApiHelper::HttpResponse('success', null, $data->Get());
+	public function GETUser($param) {
+		$ApiHelper = new ApiHelper();
+		$ApiHelper->Authentication();
+
+        if (isset($param)) {
+            $data = LoadUser($param);
+            $ApiHelper->HttpResponse('success', null, $data);
+        } else {
+            $ApiHelper->HttpResponse('fail', 'invalid id.', null);
+        }
+
+		// $data = new HelpModel();
+	 //    ApiHelper::HttpResponse('success', null, $data->Get());
 	}
 
 	public function POSTUser() {

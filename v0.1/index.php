@@ -4,23 +4,6 @@ require_once 'lib/ApiHelper.php';
 
 ApiHelper::ControllerSwitch();
 
-function User() {
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        if (Authentication()) {
-            if (isset($_GET['param'])) {
-                $data = LoadUser($_GET['param']);
-                HttpResponse('success', null, $data);
-            } else {
-                HttpResponse('fail', 'invalid id.', null);
-            }
-        } else {
-            HttpResponse('fail', 'unauthorize.', null);
-        }
-    } else {
-        HttpResponse('fail', 'only \'GET\' method acceptable.', null);
-    }
-}
-
 function LoadUser($id) {
     $user = array(
         'id' => $id,
@@ -42,15 +25,6 @@ function LoadUser($id) {
     //var_dump($user);
 
     return $user;
-}
-
-function Authentication() {
-    $headers = apache_request_headers();
-    if(isset($headers['Authorization'])){
-        return ($headers['Authorization'] == 'SomeRandomGeneratedCharacters');
-    }
-
-    return false;
 }
 
 function Login() {

@@ -23,10 +23,6 @@ Class ApiHelper {
 	    }
 	}
 
-	public function test() {
-		return "Test function called";
-	}
-
 	public function MethodSwitch($Name) {
 		switch ($_SERVER['REQUEST_METHOD']) {
 			case 'GET':
@@ -46,15 +42,17 @@ Class ApiHelper {
 		}
 	}
 
-    public function HttpResponse($status, $message, $data) {
+    public function HttpResponse($status, $message, $data, $code = 200) {
 	    $processedMessage = $status . (isset($message) ? ', ' . $message : '');
 	    $response = array(
-	            'message' => $processedMessage,
-	            'data' => $data
-	        );
+            'message' => $processedMessage,
+            'data' => $data
+        );
 	    
 	    header('Content-Type: application/json');
+	    http_response_code($code);
 	    echo json_encode($response);
+	    exit();
 	}
 
 	public static function Autoloader() {
@@ -66,7 +64,26 @@ Class ApiHelper {
 	private static function CallMethod($Method, $Name) {
 		$CtrlName = $Name . 'Ctrl';
 		$MethodName = $Method . $Name;
-		$CtrlName::$MethodName();
+
+		if (!method_exists($CtrlName, $MethodName)) {
+			self::HttpResponse('fail', 'invalid method.', null);
+		}
+		
+		if (isset($_GET['param'])) {
+            $CtrlName::$MethodName($_GET['param']);
+        } else {
+        	$CtrlName::$MethodName();
+        }
 	}
 
+	public function Authentication() {
+	    $headers = apache_request_headers();
+	    if(isset($headers['Authorization'])){
+	    	if ($headers['Authorization'] == 'SomeRandomGeneratedCharacters') {
+	    		return true;
+	    	} 
+	    }
+
+	    self::HttpResponse('fail', 'unauthorized.', 401);
+	}
 }
