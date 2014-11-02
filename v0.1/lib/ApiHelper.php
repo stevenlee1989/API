@@ -1,27 +1,49 @@
 <?php
-//echo 'loader';
-class ApiHelper {
+
+Class ApiHelper {
     public function ControllerSwitch() {
+    	self::Autoloader();
+
 	    if (isset($_GET['ctrl'])) {
 	        switch(strtolower($_GET['ctrl'])) {
-	            case 'register': 
-	                Register(); 
-	                break;
 	            case 'login': 
-	                Login(); 
+	                LoginCtrl::Init(); 
 	                break;
 	            case 'help': 
-	                Help(); 
+	                HelpCtrl::Init(); 
 	                break;
 	            case 'user':
-	                User();
+	                UserCtrl::Init();
 	                break;
 	            default : 
-	                HttpResponse('fail', 'invalid endpoint', null);
+	                self::HttpResponse('fail', 'invalid endpoint', null);
 	        }
 	    } else {
-	        HttpResponse('fail', 'invalid endpoint', null);
+	        self::HttpResponse('fail', 'invalid endpoint', null);
 	    }
+	}
+
+	public function test() {
+		return "Test function called";
+	}
+
+	public function MethodSwitch($Name) {
+		switch ($_SERVER['REQUEST_METHOD']) {
+			case 'GET':
+				self::CallMethod('GET', $Name);
+				break;
+			case 'POST':
+				self::CallMethod('POST', $Name);
+				break;
+			case 'PUT':
+				self::CallMethod('PUT', $Name);
+				break;
+			case 'DELETE':
+				self::CallMethod('DELETE', $Name);
+				break;
+			default:
+				self::HttpResponse('fail', 'invalid method.', null);
+		}
 	}
 
     public function HttpResponse($status, $message, $data) {
@@ -33,6 +55,18 @@ class ApiHelper {
 	    
 	    header('Content-Type: application/json');
 	    echo json_encode($response);
-	    exit();
 	}
+
+	public static function Autoloader() {
+		foreach (glob("./controller/*.php") as $filename) {
+		    require_once $filename;
+		}
+	}
+
+	private static function CallMethod($Method, $Name) {
+		$CtrlName = $Name . 'Ctrl';
+		$MethodName = $Method . $Name;
+		$CtrlName::$MethodName();
+	}
+
 }
