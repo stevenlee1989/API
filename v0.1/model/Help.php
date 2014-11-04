@@ -5,8 +5,8 @@ class HelpModel {
 	protected $data = array('endpoints' => array(
 			            array(
 			                'name' => 'register',
-			                'desc' => 'for registration',
-			                'url' => 'api/v0/register/',
+			                'desc' => 'for creating user account, should be private.',
+			                'url' => 'api/v0/user/',
 			                'method' => 'post',
 			                'param' => array(
 			                    'username', 'password', 'email'
@@ -31,7 +31,7 @@ class HelpModel {
 			                )
 			            ),
 			            array(
-			                'name' => 'user',
+			                'name' => 'user by id',
 			                'desc' => 'get user info',
 			                'url' => 'api/v0/user/{id}',
 			                'method' => 'get',
