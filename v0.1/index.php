@@ -4,29 +4,6 @@ require_once 'lib/ApiHelper.php';
 
 ApiHelper::ControllerSwitch();
 
-function LoadUser($id) {
-    $user = array(
-        'id' => $id,
-        'firstName' => 'Leng Cai',
-        'lastName' => 'Me',
-        'username' => 'test',
-        'createdDate' => 1272509157,
-        'expiryDate' => 1272509157,
-        'contact' => array(
-            'work' => '+60161234567',
-            'home' => '+60161234567',
-            'mobile' => '+60161234567'
-        ),
-        'email' => 'test@test.com',
-        'address' => 'somewhere in the forest',
-        'photo' => 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSegA_tvaDJtKEexCmoBzFa4nmliNySLfjp84ToSarulpGZEVwdyw'
-    );
-
-    //var_dump($user);
-
-    return $user;
-}
-
 function Login() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $postdata = file_get_contents('php://input');

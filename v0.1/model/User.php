@@ -6,7 +6,7 @@ class UserModel {
 	public function GetById($id) {
 	    $user = array(
 	        'id' => $id,
-	        'firstName' => 'Leng Cai',
+	        'firstName' => 'Leng Caia',
 	        'lastName' => 'Me',
 	        'username' => 'test',
 	        'createdDate' => 1272509157,

@@ -61,7 +61,7 @@ Class ApiHelper {
 		}
 	}
 
-	private static function CallMethod($Method, $Name) {
+	private function CallMethod($Method, $Name) {
 		$CtrlName = $Name . 'Ctrl';
 		$MethodName = $Method . $Name;
 
@@ -70,6 +70,9 @@ Class ApiHelper {
 		}
 		
 		if (isset($_GET['param'])) {
+			$MethodName .= 'ById';
+			//echo $MethodName;
+			//var_dump($_GET['param']);
             $CtrlName::$MethodName($_GET['param']);
         } else {
         	$CtrlName::$MethodName();

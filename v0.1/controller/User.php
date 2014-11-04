@@ -1,29 +1,37 @@
 <?php
 
 require_once './lib/ApiHelper.php';
-//require_once './model/Help.php';
+require_once './model/User.php';
 
 class UserCtrl {
 	public function Init() {
 		ApiHelper::MethodSwitch('User');
 	}
 
-	// TODO
-	public function GETUser($param) {
+    // Get multiple users
+    public function GETUser() {
+        $ApiHelper = new ApiHelper();
+        $ApiHelper->Authentication();
+
+        $ApiHelper->HttpResponse('success', 'but endpoint under construction.', null);
+    }
+
+	// Get user by Id
+	public function GETUserById($param) {
+        echo $_GET['param'];
 		$ApiHelper = new ApiHelper();
 		$ApiHelper->Authentication();
 
         if (isset($param)) {
-            $data = LoadUser($param);
+            $User = new UserModel();
+            $data = $User->GetById($param);
             $ApiHelper->HttpResponse('success', null, $data);
         } else {
             $ApiHelper->HttpResponse('fail', 'invalid id.', null);
         }
-
-		// $data = new HelpModel();
-	 //    ApiHelper::HttpResponse('success', null, $data->Get());
 	}
 
+    // Register user
 	public function POSTUser() {
         $postdata = file_get_contents('php://input');
 
